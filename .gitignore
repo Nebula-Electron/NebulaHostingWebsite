@@ -1,0 +1,12 @@
+## Node files
+node_modules
+package-lock.json
+
+## Secret files
+.env
+/pages/styles/main2.css
+pnpm-lock.yaml
+```
+/pages/logged/mobile.ejs
+/pages/logged-off/mobile.ejs
+config.json

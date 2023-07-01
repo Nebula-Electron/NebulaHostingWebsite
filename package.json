@@ -1,0 +1,30 @@
+{
+  "name": "galaxyhosting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.23.0",
+    "body-parser": "^1.19.0",
+    "discord-oauth2": "^2.8.0",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-session": "^1.17.2",
+    "form-data": "^4.0.0",
+    "http": "^0.0.1-security",
+    "is-mobile": "^4.0.0",
+    "mongoose": "^6.0.11",
+    "node-fetch": "^3.0.0",
+    "path": "^0.12.7",
+    "url": "^0.11.0"
+  }
+}

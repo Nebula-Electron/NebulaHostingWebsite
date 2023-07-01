@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="icon" href="../assets/images/galaxy.png">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="/"><img src="../assets/images/Galaxy.png" alt="logo"></a>
+        <nav>
+            <ul class="nav__links">
+                <li> <a href="/github">GitHub</a></li>
+                <li><a href="/privacy">Terms</a></li>
+                <li><a href="/discord">Support</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="/">Home</a>
+        <p class="menu cta">Menu</p>
+    </header>
+    <main>
+        <img class="user__avatar"
+            src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=1024">
+        <h1> Olá, <%= user.username%>#<%= user.discriminator %>
+        </h1>
+        <br>
+        <div class="action__buttons">
+            <a href="/" id="daily"><button class="daily-button">Start Setup</button></a>
+            <br>
+            <br>
+            <br>
+            <a href="/del" id="danger"><button class="danger-button" onclick="">Delete account</button></a>
+        </div>
+        <br>
+        <br>
+        <br>
+    </main>
+
+</body>
+
+</html>
