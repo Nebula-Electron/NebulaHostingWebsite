@@ -26,6 +26,8 @@ router.get('/login/callback', async (req, res) => {
 
             const oauthData = await oauth.json();
 
+            if (oauthData.scope !== config.oauth.scopes.join(" ")) return redirectToLogin(res);
+
 
             const userResult = await fetch('https://discord.com/api/users/@me', {
                 headers: {
@@ -60,10 +62,7 @@ router.get('/login/callback', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.redirect(`https://discord.com/api/oauth2/authorize` +
-        `?client_id=${config.oauth.clientId}` +
-        `&redirect_uri=${encodeURIComponent(config.oauth.callbackURL)}` +
-        `&response_type=code&scope=${encodeURIComponent(config.oauth.scopes.join(" "))}`);
+    redirectToLogin(res);
 });
 
 router.get('/logout', (req, res) => {
@@ -77,3 +76,10 @@ router.get('/logout', (req, res) => {
 
 
 module.exports = router;
+
+function redirectToLogin(res) {
+    return res.redirect(`https://discord.com/api/oauth2/authorize` +
+        `?client_id=${config.oauth.clientId}` +
+        `&redirect_uri=${encodeURIComponent(config.oauth.callbackURL)}` +
+        `&response_type=code&scope=${encodeURIComponent(config.oauth.scopes.join(" "))}&prompt=consent`);
+}
