@@ -1,6 +1,6 @@
 const express = require('express');
 const config = require('../../config.json');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const sendMetadataToDiscord = require("../../util/sendMetadataToDiscord.js")
 const router = express.Router();
 const user = require('../../database/mongoConnect.js')
 
@@ -40,9 +40,10 @@ router.get('/login/callback', async (req, res) => {
 
             if (!userData) {
                 new user({
-                    _id: result.id
+                    _id: result.id,
+                    isPremium: false
                 }).save().catch(err => console.log(err));
-
+                await sendMetadataToDiscord()
                 console.log(`[MONGO] User: ${result.username} is saved in the database!`);
             }
 
