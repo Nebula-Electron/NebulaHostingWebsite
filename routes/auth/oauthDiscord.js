@@ -26,7 +26,7 @@ router.get('/login/callback', async (req, res) => {
 
             const oauthData = await oauth.json();
 
-            if (oauthData.scope !== config.oauth.scopes.join(" ")) return redirectToLogin(res);
+            if (JSON.stringify(oauthData.scope.split(" ").sort()) !== JSON.stringify(config.oauth.scopes.sort())) return redirectToLogin(res);
 
 
             const userResult = await fetch('https://discord.com/api/users/@me', {
@@ -43,7 +43,7 @@ router.get('/login/callback', async (req, res) => {
                     _id: result.id,
                     isPremium: false
                 }).save().catch(err => console.log(err));
-                await sendMetadataToDiscord()
+                await sendMetadataToDiscord(oauthData.token_type, oauthData.access_token, false)
                 console.log(`[MONGO] User: ${result.username} is saved in the database!`);
             }
 
