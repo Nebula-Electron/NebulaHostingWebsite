@@ -4,7 +4,7 @@
     "oauth": {
         "clientId": "",
         "callbackURL": "http://localhost:3000/login/callback",
-        "scopes": ["identify"]
+        "scopes": ["identify", "role_connections.write"]
     },
     "session": {
         "secret": "oimate",

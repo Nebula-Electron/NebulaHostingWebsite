@@ -1,6 +1,6 @@
 const express = require('express');
 const config = require('../../config.json');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const sendMetadataToDiscord = require("../../util/sendMetadataToDiscord.js")
 const router = express.Router();
 const user = require('../../database/mongoConnect.js')
 
@@ -26,6 +26,8 @@ router.get('/login/callback', async (req, res) => {
 
             const oauthData = await oauth.json();
 
+            if (JSON.stringify(oauthData.scope.split(" ").sort()) !== JSON.stringify(config.oauth.scopes.sort())) return redirectToLogin(res);
+
 
             const userResult = await fetch('https://discord.com/api/users/@me', {
                 headers: {
@@ -38,9 +40,10 @@ router.get('/login/callback', async (req, res) => {
 
             if (!userData) {
                 new user({
-                    _id: result.id
+                    _id: result.id,
+                    isPremium: false
                 }).save().catch(err => console.log(err));
-
+                await sendMetadataToDiscord(oauthData.token_type, oauthData.access_token, false)
                 console.log(`[MONGO] User: ${result.username} is saved in the database!`);
             }
 
@@ -60,10 +63,7 @@ router.get('/login/callback', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.redirect(`https://discord.com/api/oauth2/authorize` +
-        `?client_id=${config.oauth.clientId}` +
-        `&redirect_uri=${encodeURIComponent(config.oauth.callbackURL)}` +
-        `&response_type=code&scope=${encodeURIComponent(config.oauth.scopes.join(" "))}`);
+    redirectToLogin(res);
 });
 
 router.get('/logout', (req, res) => {
@@ -77,3 +77,10 @@ router.get('/logout', (req, res) => {
 
 
 module.exports = router;
+
+function redirectToLogin(res) {
+    return res.redirect(`https://discord.com/api/oauth2/authorize` +
+        `?client_id=${config.oauth.clientId}` +
+        `&redirect_uri=${encodeURIComponent(config.oauth.callbackURL)}` +
+        `&response_type=code&scope=${encodeURIComponent(config.oauth.scopes.join(" "))}&prompt=consent`);
+}
